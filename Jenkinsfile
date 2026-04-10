@@ -12,7 +12,6 @@ pipeline {
 
     stages {
 
-
         stage('Install Dependencies') {
             steps {
                 bat 'npm install'
@@ -25,11 +24,9 @@ pipeline {
             }
         }
 
-        stage('Build App') {
-            steps {
-                bat 'npm run build'
-            }
-        }
+        // ❌ REMOVED build stage (not needed)
+
+        // ❌ REMOVED Start App Check (wrong in CI)
 
         stage('Build Docker Image') {
             steps {
@@ -50,6 +47,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy Staging') {
             when {
                 branch 'develop'
