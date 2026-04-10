@@ -9,23 +9,23 @@ const location =
 
 let db;
 
-function init() {
+async function init() {
   return new Promise((resolve, reject) => {
-
-    if (db) {
-      db.close(); // 🔥 close old connection
-    }
 
     db = new sqlite3.Database(location, err => {
       if (err) return reject(err);
 
-      db.run(
-        'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean)',
-        err => {
-          if (err) return reject(err);
-          resolve();
-        }
-      );
+      db.serialize(() => {
+        db.run('DROP TABLE IF EXISTS todo_items'); // 🔥 FORCE RESET
+
+        db.run(
+          'CREATE TABLE todo_items (id varchar(36), name varchar(255), completed boolean)',
+          err => {
+            if (err) return reject(err);
+            resolve();
+          }
+        );
+      });
     });
   });
 }
