@@ -11,6 +11,11 @@ let db;
 
 function init() {
   return new Promise((resolve, reject) => {
+
+    if (db) {
+      db.close(); // 🔥 close old connection
+    }
+
     db = new sqlite3.Database(location, err => {
       if (err) return reject(err);
 
