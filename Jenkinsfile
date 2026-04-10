@@ -21,7 +21,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'npm test -- --runInBand'
+                bat 'set NODE_ENV=test && npm test -- --runInBand'
             }
         }
 
