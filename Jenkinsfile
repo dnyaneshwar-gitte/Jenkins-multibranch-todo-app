@@ -10,6 +10,14 @@ pipeline {
         TAG = "${BRANCH_NAME}-${BUILD_NUMBER}"
     }
 
+    parameters {
+        choice(
+            name: 'COMPONENTS',
+            choices: ['frontend', 'backend', 'database', 'all'],
+            description: 'Select component to deploy'
+        )
+    }
+
     stages {
 
         stage('Install Dependencies') {
