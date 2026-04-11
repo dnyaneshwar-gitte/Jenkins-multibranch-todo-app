@@ -86,27 +86,25 @@ pipeline {
             }
         }
 
-        stage('Deploy Selected Components') {
+       stage('Deploy Selected Components') {
             when {
                 expression { currentBuild.currentResult == 'SUCCESS' }
             }
             steps {
                 script {
-                    def selected = params.COMPONENTS.split(',')
+                    echo "Selected Component: ${params.COMPONENTS}"
         
-                    echo "Selected Components: ${params.COMPONENTS}"
-        
-                    if (selected.contains('frontend')) {
+                    if (params.COMPONENTS == 'frontend' || params.COMPONENTS == 'all') {
                         echo "Deploying FRONTEND..."
                         bat 'echo Frontend deployed'
                     }
         
-                    if (selected.contains('backend')) {
+                    if (params.COMPONENTS == 'backend' || params.COMPONENTS == 'all') {
                         echo "Deploying BACKEND..."
                         bat 'echo Backend deployed'
                     }
         
-                    if (selected.contains('database')) {
+                    if (params.COMPONENTS == 'database' || params.COMPONENTS == 'all') {
                         echo "Deploying DATABASE..."
                         bat 'echo Database deployed'
                     }
