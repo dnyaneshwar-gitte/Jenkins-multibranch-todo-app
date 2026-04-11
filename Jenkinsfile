@@ -10,16 +10,6 @@ pipeline {
         TAG = "${BRANCH_NAME}-${BUILD_NUMBER}"
     }
 
-    parameters {
-        extendedChoice(
-            name: 'COMPONENTS',
-            type: 'PT_CHECKBOX',
-            multiSelectDelimiter: ',',
-            value: 'frontend,backend,database',
-            description: 'Select components to deploy'
-        )
-    }
-
     stages {
 
         stage('Install Dependencies') {
