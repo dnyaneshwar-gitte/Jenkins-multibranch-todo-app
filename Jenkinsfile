@@ -10,6 +10,16 @@ pipeline {
         TAG = "${BRANCH_NAME}-${BUILD_NUMBER}"
     }
 
+    parameters {
+        extendedChoice(
+            name: 'COMPONENTS',
+            type: 'PT_CHECKBOX',
+            multiSelectDelimiter: ',',
+            value: 'frontend,backend,database',
+            description: 'Select components to deploy'
+        )
+    }
+
     stages {
 
         stage('Install Dependencies') {
@@ -75,6 +85,35 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Selected Components') {
+            when {
+                expression { currentBuild.currentResult == 'SUCCESS' }
+            }
+            steps {
+                script {
+                    def selected = params.COMPONENTS.split(',')
+        
+                    echo "Selected Components: ${params.COMPONENTS}"
+        
+                    if (selected.contains('frontend')) {
+                        echo "Deploying FRONTEND..."
+                        bat 'echo Frontend deployed'
+                    }
+        
+                    if (selected.contains('backend')) {
+                        echo "Deploying BACKEND..."
+                        bat 'echo Backend deployed'
+                    }
+        
+                    if (selected.contains('database')) {
+                        echo "Deploying DATABASE..."
+                        bat 'echo Database deployed'
+                    }
+                }
+            }
+        }
+        
         
 
         stage('Deploy Staging') {
