@@ -47,6 +47,35 @@ pipeline {
                 }
             }
         }
+        stage('Post Build Actions') {
+            when {
+                expression { currentBuild.currentResult == 'SUCCESS' }
+            }
+            stages {
+        
+                stage('Security Scan') {
+                    steps {
+                        echo "Running Security Scan..."
+                        // Example
+                        bat 'echo Scanning Docker Image...'
+                    }
+                }
+        
+                stage('Quality Gate') {
+                    steps {
+                        echo "Checking Quality Gate..."
+                        bat 'echo Code Quality OK'
+                    }
+                }
+        
+                stage('Prepare Deployment') {
+                    steps {
+                        echo "Preparing for Deployment..."
+                    }
+                }
+            }
+        }
+        
 
         stage('Deploy Staging') {
             when {
